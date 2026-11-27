@@ -21,10 +21,10 @@ dist/.youtube/q2-youtube: dist/q2-start.o dist/q2-youtube.o
 	mkdir -p $(@D)
 	$(Q2_LD) -m elf32ltsmip -e __start --dynamic-linker $(Q2_LOADER) --image-base=0x400000 -z noexecstack --hash-style=sysv -s -o $@ $^ "$(SYSROOT)/lib/libc.so.6" "$(SYSROOT)$(Q2_LOADER)"
 
-dist/youtube.zip: dist/.youtube/q2-youtube q2app run companion-url.example
-	cp q2app run companion-url.example dist/.youtube/
+dist/youtube.zip: dist/.youtube/q2-youtube q2app run companion-url.example icon.png icon-40.png pane.png
+	cp q2app run companion-url.example icon.png icon-40.png pane.png dist/.youtube/
 	chmod +x dist/.youtube/run
-	cd dist && zip -q youtube.zip .youtube/q2-youtube .youtube/q2app .youtube/run .youtube/companion-url.example
+	cd dist && rm -f youtube.zip && zip -q youtube.zip .youtube/q2-youtube .youtube/q2app .youtube/run .youtube/companion-url.example .youtube/icon.png .youtube/icon-40.png .youtube/pane.png
 
 check:
 	$(HOST_CC) -std=c11 -Wall -Wextra -Werror -fsyntax-only q2-youtube.c
